@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FAFAFA"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#F6F6F6"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        app:cardCornerRadius="@dimen/_8sdp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/border_past"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linearUpcomingPatient"
+                android:layout_width="386dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="10dp"
+                    android:text="APPOINTMENT ID :"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewAppointmentIdPastHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:textColor="#07518F"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/underline"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/linearUpcomingPatient"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="#DDDDDD" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout1past"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PATIENT"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textSize="@dimen/_10sdp"
+                    android:layout_gravity="center"
+                    android:textColor="#AEAEAE" />
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewPatientNamePastHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/underline"
+                    android:layout_marginStart="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:textColor="#07518F"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewWaitingNamePast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:text="Waiting For Doctor confirmation"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:textSize="@dimen/_12sdp"
+                android:layout_below="@+id/underline"
+                android:textStyle="bold" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linearUpcomingPatient"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_28sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="start"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SPECIALITY"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textSize="@dimen/_10sdp"
+                    android:layout_gravity="center"
+                    android:textColor="#AEAEAE" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewSpecialitysPast"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Appointment ID"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/_11sdp"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="#494949" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linearLayout2"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/payment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PAYMENT"
+                    android:visibility="gone"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textSize="@dimen/_10sdp"
+                    android:layout_gravity="center"
+                    android:textColor="#AEAEAE" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewStatusPastHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linearLayout3"
+                    android:layout_marginStart="@dimen/_19sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutPastHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/border_past"
+                android:layout_below="@+id/linearLayout4"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/datePastHistory"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="2024"
+                    android:textSize="@dimen/_10sdp"
+                    android:drawablePadding="@dimen/_8sdp"
+                    android:drawableStart="@drawable/calenderpast"
+                    android:textColor="#07518F"
+                    android:padding="@dimen/_5sdp" />
+
+                <TextView
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="#07518F" />
+
+                <TextView
+                    android:id="@+id/timePastHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_10sdp"
+                    android:drawablePadding="@dimen/_8sdp"
+                    android:drawableStart="@drawable/clockpast"
+                    android:textColor="#07518F"
+                    android:padding="@dimen/_5sdp" />
+            </LinearLayout>
+
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cancelBtnPastHistory"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_below="@id/linearLayout4"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_180sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center"
+                android:text="CANCEL"
+                android:background="@drawable/cancel"
+                android:textColor="#F5F5F5"
+                android:textSize="@dimen/_10sdp" />
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

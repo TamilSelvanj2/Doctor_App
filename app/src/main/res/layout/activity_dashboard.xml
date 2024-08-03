@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FAFAFA"
+        tools:openDrawer="start"
+        android:fitsSystemWindows="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:id="@+id/toolbar"
+                android:elevation="4dp">
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/_20sdp">
+
+                    <ImageView
+                        android:id="@+id/notificationImageView"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/notification"
+                        android:clickable="true" />
+
+                    <ImageView
+                        android:id="@+id/notificationSymbolImageView"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:visibility="gone"
+                        android:clickable="true"
+                        android:background="@drawable/notification_symbol"
+                        />
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/notificationCountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|top"
+                    android:gravity="center"
+                    android:minWidth="16dp"
+                    android:minHeight="16dp"
+                    android:padding="2dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:background="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_header">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/_100sdp"
+                android:layout_gravity="top">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/booking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/dashboard_icons"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="Dashboard"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/custom_navigation_item_background"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/appointment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/assignment_icons"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="Appointments"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/custom_navigation_item_background"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/patient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/patients"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="Patients"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/custom_navigation_item_background"
+                    />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="bottom">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/nav_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/account_circle_24"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:text="Profile"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="@drawable/custom_navigation_item_background"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/nav_logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/nav_logout"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:text="Logout"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="@drawable/custom_navigation_item_background"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</layout>

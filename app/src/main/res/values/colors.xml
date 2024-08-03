@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#44D044</color>
+    <color name="orange">#FF5F1F</color>
+    <color name="custom_underline_color">#0000FF</color> <!-- Blue color -->
+    <color name="nav_item_selected_color">#9CD7CE</color> <!-- Change this to your desired selected color -->
+
+    <color name="preBookAppointmentColor">#FFA500</color> <!-- Orange -->
+    <color name="acceptedColor">#9FEF9F</color> <!-- Green -->
+    <color name="rejectedColor">#FF0000</color> <!-- Red -->
+    <color name="paymentCompletedColor">#0000FF</color> <!-- Blue, just as an example -->
+    <color name="appointmentCompletedColor">#800080</color> <!-- Purple, just as an example -->
+    <color name="cancelledColor">#808080</color> <!-- Grey, just as an example -->
+
+    <color name="custom_navigation_text_color">#FAFAFA</color>
+    <color name="custom_navigation_icon_tint_color">#59BBAC</color>
+
+    <color name="custom_selected_color">#59BBAC</color>
+    <color name="custom_pressed_color">#FAFAFA</color>
+
+    <color name="selected_color">#07518F</color>
+    <color name="pressed_color">#FAFAFA</color>
+    <color name="default_color">#616161</color>
+
+</resources>

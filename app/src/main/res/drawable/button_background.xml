@@ -1,0 +1,5 @@
+<!-- res/drawable/button_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#07518F" /> <!-- Set the background color as per your preference -->
+    <corners android:radius="@dimen/_5sdp" /> <!-- Adjust the corner radius to control the box shape -->
+</shape>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:gravity="bottom"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <ImageView
+        android:id="@+id/doctor_icon"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_height="@dimen/_75sdp"
+        />
+
+    <TextView
+        android:id="@+id/profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="Android Knowledge"
+        android:layout_marginStart="@dimen/_110sdp"
+        android:textColor="#494949"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/profileEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="contact@androidknowledge.com"
+        android:textColor="#83899F"
+        android:textSize="14sp"
+        android:layout_below="@+id/profileName"
+        android:layout_marginStart="@dimen/_110sdp"
+        android:layout_marginBottom="16dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_toEndOf="@+id/profileEmail"
+        android:layout_marginStart="@dimen/_50sdp"
+        />
+
+
+</RelativeLayout>

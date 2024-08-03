@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Active">
+        <item name="android:textSize">@dimen/_8sdp</item>
+    </style>
+
+    <style name="Inactive">
+        <item name="android:textSize">@dimen/_15sdp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TabTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/_9sdp</item> <!-- Change the text size to your desired value -->
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize the toolbar theme -->
+        <item name="toolbarNavigationButtonStyle">@style/MyToolbarNavigationButtonStyle</item>
+    </style>
+
+    <style name="MyToolbarNavigationButtonStyle" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:tint">#07518F</item>
+    </style>
+
+    <style name="RoundedTabLayoutStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/tabs_selector</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:background">@drawable/tabs_selector</item>
+    </style>
+
+
+
+</resources>
