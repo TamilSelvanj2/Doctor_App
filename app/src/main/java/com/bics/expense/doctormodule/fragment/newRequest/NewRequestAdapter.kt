@@ -43,8 +43,6 @@ class NewRequestAdapter (private var appointments: List<NewRequestResponse>): Re
         private val wait: TextView = itemView.findViewById(R.id.textViewWaitingNameNewRequest)
 
 
-
-
         fun bind(appointment: NewRequestResponse) {
 
             appointmentId.text = appointment.appointmentID
@@ -62,13 +60,11 @@ class NewRequestAdapter (private var appointments: List<NewRequestResponse>): Re
                 "PreBookAppointment" -> {
                     status.text = "Book in Advance"
                     status.setTextColor(Color.parseColor("#FF5F1F"))
-
                 }
 
                 "PaymentCompleted" -> {
                     status.text = "Cash"
                     status.setTextColor(Color.parseColor("#5ABCAD"))
-
                 }
             }
 
@@ -85,13 +81,11 @@ class NewRequestAdapter (private var appointments: List<NewRequestResponse>): Re
 
                 val intent = Intent(itemView.context, AppointmentsActivity::class.java)
                 intent.putExtra("APPOINTMENT_ID", appointment.appointmentID)
-
                 itemView.context.startActivity(intent)
-            }
-
 
             }
         }
     }
+}
 
 

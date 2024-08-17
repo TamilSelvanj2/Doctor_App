@@ -1,4 +1,4 @@
-package com.bics.expense.doctormodule.fragment.profile
+package com.bics.expense.receptionistmodule.fragment.profile
 
 data class ProfileRequest(
     val success: Boolean,

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RadioGroup
+        android:id="@+id/rejected_radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/notAvailable_Radio"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            android:text="Not Available"/>
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/Emergency_radio"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            android:text="Emergency Work"/>
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/visiting_radio"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            android:text="Visiting a ward patient"/>
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/other_radio"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            android:text="Other"/>
+    </RadioGroup>
+
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/othersNotes"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_80sdp"
+            android:maxLength="1000"
+            android:visibility="gone"
+            android:gravity="start|top"
+            android:background="#FAFAFA"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:textSize="@dimen/_13sdp"
+            android:fontFamily="sans-serif-medium"
+            android:inputType="textMultiLine" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCancel"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="#F34642"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/rejectedAccepted"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:textSize="@dimen/_12sdp"
+            android:background="@drawable/button_background"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

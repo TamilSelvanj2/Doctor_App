@@ -16,6 +16,7 @@ dependencyResolutionManagement {
     }
 }
 
+
 rootProject.name = "DoctorModule"
 include(":app")
  

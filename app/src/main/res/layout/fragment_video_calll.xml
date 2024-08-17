@@ -5,10 +5,41 @@
     android:layout_height="match_parent"
     tools:context=".videoCall.VideoCalllFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/audio_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Incoming Call"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            android:id="@+id/accept_button"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_50sdp"
+            android:text="Accept"
+            android:layout_below="@id/audio_name"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:id="@+id/reject_button"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_50sdp"
+            android:text="Reject"
+            android:layout_below="@id/audio_name"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="8dp"
+          />
+
+    </RelativeLayout>
+
 
 </FrameLayout>

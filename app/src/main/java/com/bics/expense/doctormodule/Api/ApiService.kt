@@ -11,18 +11,22 @@ import com.bics.expense.doctormodule.fragment.doctorAppoinment.DocumentResponse
 import com.bics.expense.doctormodule.fragment.newRequest.NewRequestModule
 import com.bics.expense.doctormodule.fragment.pastHistory.PastAppointmentsRequest
 import com.bics.expense.doctormodule.fragment.pastHistory.PastHistoryModule
+import com.bics.expense.doctormodule.fragment.patientDetail.PatientResponse
+import com.bics.expense.doctormodule.fragment.patientUpcomingPast.CustomAppointment
+import com.bics.expense.doctormodule.fragment.prescription.AddPrecriptionRequest
+import com.bics.expense.doctormodule.fragment.prescription.AddPrecriptionRequests
+import com.bics.expense.doctormodule.fragment.prescription.PrescriptionRequest
 import com.bics.expense.doctormodule.fragment.rejected.RejectAppoinmentRequest
 import com.bics.expense.doctormodule.fragment.rejected.RejectedModel
 import com.bics.expense.doctormodule.fragment.upcoming.UpcomingModule
-import com.bics.expense.doctormodule.fragment.patientDetail.PatientResponse
-import com.bics.expense.doctormodule.fragment.patientUpcomingPast.CustomAppointment
-import com.bics.expense.doctormodule.fragment.profile.ProfileRequest
-import com.bics.expense.doctormodule.fragment.profile.ProfileUpdateRequest
+import com.bics.expense.receptionistmodule.fragment.profile.ProfileRequest
+import com.bics.expense.receptionistmodule.fragment.profile.ProfileUpdateRequest
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.HTTP
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Query
@@ -75,5 +79,15 @@ interface ApiService {
 
         @GET("/Appointment/GetAppointmentDetailsBasedOnPatientID")
         fun getUpcomingAppointmentDetails(@Query("PatientID") patientID: String): Call<CustomAppointment>
+
+        @GET("/Doctor/GetPrescriptionsBasedOnAppointmentID")
+        fun getPrescription(@Query("AppointmentID") appointmentID: String): Call<PrescriptionRequest>
+
+
+        @GET("/LookUp/GetAllMedicines")
+        fun getAllMedicine(@Query("Authorization") token: String): Call<AddPrecriptionRequest>
+
+        @POST("addPrescription")
+        fun addPrescription(@Header("Authorization") token: String, @Body request: AddPrecriptionRequests): Call<Void>
 
 }

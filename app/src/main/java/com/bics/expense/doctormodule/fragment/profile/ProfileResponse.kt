@@ -1,4 +1,5 @@
-package com.bics.expense.doctormodule.fragment.profile
+package com.bics.expense.receptionistmodule.fragment.profile
+
 
 data class ProfileResponse(
     val accountID: String,
@@ -6,6 +7,7 @@ data class ProfileResponse(
     val clinicID: String?,
     val firstName: String,
     val lastName: String,
+    val profileImage: String,
     val email: String,
     val phone: String,
     val role: String

@@ -2,8 +2,11 @@ package com.bics.expense.doctormodule.otp
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -13,7 +16,9 @@ import com.bics.expense.doctormodule.Login.LoginResponse
 import com.bics.expense.doctormodule.R
 import com.bics.expense.doctormodule.dashboard.DashboardActivity
 import com.bics.expense.doctormodule.databinding.ActivityOtpBinding
-import com.quickblox.chat.QBChatService
+import com.bics.expense.doctormodule.videoCall.DEFAULT_USER_PASSWORD
+import com.bics.expense.doctormodule.videoCall.EXTRA_LOGIN_RESULT_CODE
+import com.bics.expense.doctormodule.videoCall.LoginService
 import com.quickblox.core.QBEntityCallback
 import com.quickblox.core.exception.QBResponseException
 import com.quickblox.users.QBUsers
@@ -23,16 +28,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+const val ERROR_LOGIN_ALREADY_TAKEN_HTTP_STATUS = 422
 
 class OtpActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityOtpBinding
-    private  var userId: String? = null
-    private lateinit var users: ArrayList<QBUser>
-    private var opponents: ArrayList<QBUser>? = null
-    private val qbChatService: QBChatService = QBChatService.getInstance()
-    val isLoggedIn: Boolean
-        get() = QBChatService.getInstance().isLoggedIn
+    private var userId: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,22 +54,21 @@ class OtpActivity : AppCompatActivity() {
 
             binding.textInputLayoutPassword.helperText = passwordError
 
-            if ( passwordError == null) {
+            if (passwordError == null) {
                 performLogin()
             }
         }
     }
 
 
-
-        private fun validatePassword(): String? {
-            val userIdPassword = binding.editTextLoginOtp.text.toString()
-            return if (userIdPassword.isEmpty()) {
-                "Please enter a password"
-            } else {
-                null
-            }
+    private fun validatePassword(): String? {
+        val userIdPassword = binding.editTextLoginOtp.text.toString()
+        return if (userIdPassword.isEmpty()) {
+            "Please enter a password"
+        } else {
+            null
         }
+    }
 
     private fun performLogin() {
 
@@ -90,22 +90,30 @@ class OtpActivity : AppCompatActivity() {
 
                         val loginResponse = call.body()
 
+                        binding.errorMessage.visibility = View.GONE
 
                         if (loginResponse?.success == true) {
 
                             val userData = loginResponse.data
                             val token = userData?.token
 
-                            val sharedPreferences = getSharedPreferences("your_preference_name", MODE_PRIVATE)
+                            val sharedPreferences =
+                                getSharedPreferences("your_preference_name", MODE_PRIVATE)
                             sharedPreferences.edit().putString("token", token).apply()
 
-                            Toast.makeText(this@OtpActivity, "You have successfully logged in", Toast.LENGTH_LONG).show()
-                            binding.errorMessage.visibility = View.GONE
+                            Toast.makeText(
+                                this@OtpActivity,
+                                "You have successfully logged in",
+                                Toast.LENGTH_LONG
+                            ).show()
 
-                            loginQuickBloxUser()
-                            finish()
+                            binding.progressBar.visibility = View.GONE
+                            val quickBlox_docId = userData?.quickBlox_UserID.toString()
+                            val quickBlox_pass = userData?.quickBlox_Password.toString()
+                            loginQuickBloxUser(quickBlox_docId, quickBlox_pass)
 
-                            val dashboardIntent = Intent(this@OtpActivity, DashboardActivity::class.java)
+                            val dashboardIntent =
+                                Intent(this@OtpActivity, DashboardActivity::class.java)
 
                             dashboardIntent.putExtra("firstName", userData?.firstName)
                             dashboardIntent.putExtra("lastName", userData?.lastName)
@@ -114,17 +122,15 @@ class OtpActivity : AppCompatActivity() {
 
                             startActivity(dashboardIntent)
 
-
                         } else {
                             // Handle unsuccessful login response (show error message)
                             val errorMessage = loginResponse?.error ?: "Unknown error"
-
+                            binding.errorMessage.visibility = View.GONE
 
                             if (errorMessage.isNotEmpty()) {
                                 when {
                                     errorMessage.contains("Account with above user id is not found") -> {
                                         binding.errorMessage.text = "Account user not found"
-                                        binding.errorMessage.visibility = View.VISIBLE
                                         Toast.makeText(
                                             this@OtpActivity,
                                             errorMessage,
@@ -134,7 +140,6 @@ class OtpActivity : AppCompatActivity() {
 
                                     errorMessage.contains("Invalid credentials") -> {
                                         binding.errorMessage.text = "Invalid credentials"
-                                        binding.errorMessage.visibility = View.VISIBLE
                                         Toast.makeText(
                                             this@OtpActivity,
                                             errorMessage,
@@ -142,7 +147,6 @@ class OtpActivity : AppCompatActivity() {
                                         ).show()
 
                                     }
-
                                     else -> {
                                         binding.errorMessage.text = errorMessage
                                         binding.errorMessage.visibility = View.VISIBLE
@@ -178,31 +182,90 @@ class OtpActivity : AppCompatActivity() {
         }
     }
 
-    fun loginQuickBloxUser() {
-
+    fun loginQuickBloxUser(quickBlox_docID: String, quickBlox_pass: String) {
         val userLogin = QBUser().apply {
-            login = userId  // Set login field correctly
-            password = "Bics@123"
+            login = userId
+            password = quickBlox_pass
         }
-        QBUsers.signIn(userLogin).performAsync(object : QBEntityCallback<QBUser> {
-            override fun onSuccess(user: QBUser?, bundle: Bundle?) {
-                // Handle the success case here
-                // For example, you can retrieve user details or navigate to another screen
-                user?.let {
-                    Log.d("QuickBlox", "Login successful: ${it.id}")
 
+        Log.d("Quickblox", "Starting login with credentials: $quickBlox_docID")
 
-                }
+        // Try signing up the user first
+        signUp(userLogin)
+    }
+
+    private fun signUp(user: QBUser) {
+        Log.d("Quickblox", "Attempting to sign up user with login: ${user.login}")
+
+        QBUsers.signUp(user).performAsync(object : QBEntityCallback<QBUser> {
+            override fun onSuccess(result: QBUser, params: Bundle) {
+                Log.d("Quickblox", "Sign up successful for user: ${result.login}")
+                loginToChat(result)
             }
-            override fun onError(exception: QBResponseException?) {
-                // Handle the error case here
-                exception?.let {
-                    Log.e("QuickBlox", "Login error: ${it.message}")
+
+            override fun onError(e: QBResponseException) {
+                Log.e("Quickblox", "Sign up error: ${e.message}")
+
+                if (e.httpStatusCode == ERROR_LOGIN_ALREADY_TAKEN_HTTP_STATUS) {
+                    Log.d("Quickblox", "User already exists. Attempting to log in.")
+                    loginToRest(user)
+                } else {
+                    Log.e("Quickblox", "Unhandled sign up error: ${e.httpStatusCode}")
+                    // You might want to add additional error handling here
                 }
             }
         })
     }
 
+    private fun loginToRest(user: QBUser) {
+        Log.d("Quickblox", "Attempting to log in existing user with login: ${user.login}")
 
+        QBUsers.signIn(user).performAsync(object : QBEntityCallback<QBUser> {
+            override fun onSuccess(user: QBUser?, bundle: Bundle?) {
+                Log.d("Quickblox", "Login successful: ${user?.id}")
+
+                if (user != null) {
+                    loginToChat(user)
+                } else {
+                    Log.e("Quickblox", "Login failed: user is null")
+                }
+            }
+
+            override fun onError(exception: QBResponseException?) {
+                Log.e("Quickblox", "Login error: ${exception?.message}")
+                // Handle error case, maybe retry or notify the user
+            }
+        })
+    }
+
+    private fun loginToChat(user: QBUser) {
+        Log.d("Quickblox", "Logging in to chat with user: ${user.login}")
+
+        user.password = DEFAULT_USER_PASSWORD
+        startLoginService(user)
+    }
+
+    private fun startLoginService(qbUser: QBUser) {
+        Log.d("Quickblox", "Starting LoginService for user: ${qbUser.login}")
+
+        val tempIntent = Intent(this, LoginService::class.java)
+        val pendingIntent = createPendingResult(EXTRA_LOGIN_RESULT_CODE, tempIntent, 0)
+        LoginService.loginToChatAndInitRTCClient(this, qbUser, pendingIntent)
+    }
+
+    private inner class LoginEditTextWatcher internal constructor(private val editText: EditText) :
+        TextWatcher {
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            // No action needed
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            editText.error = null
+        }
+
+        override fun afterTextChanged(s: Editable) {
+            // No action needed
+        }
+    }
 }
-

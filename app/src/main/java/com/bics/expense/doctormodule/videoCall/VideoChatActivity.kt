@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bics.expense.doctormodule.databinding.ActivityVideoChatBinding
+import com.quickblox.auth.session.QBSessionManager
 import com.quickblox.chat.QBChatService
 import com.quickblox.chat.QBRestChatService
 import com.quickblox.chat.model.QBChatDialog
 import com.quickblox.chat.model.QBDialogType
 import com.quickblox.core.QBEntityCallback
 import com.quickblox.core.exception.QBResponseException
+import com.quickblox.users.model.QBUser
 import com.quickblox.videochat.webrtc.QBRTCClient
 import com.quickblox.videochat.webrtc.QBRTCSession
 import com.quickblox.videochat.webrtc.QBRTCTypes
@@ -26,13 +28,15 @@ class VideoChatActivity : AppCompatActivity() {
     private lateinit var quickBloxPatientID: String
     private lateinit var quickBloxDoctorID: String
 
-    private lateinit var localVideoView: QBRTCSurfaceView
-    private lateinit var remoteVideoView: QBRTCSurfaceView
 
-    private  var mRtcClient: QBRTCClient?=null
+
+    private lateinit var mRtcClient: QBRTCClient
     private var qbSession: QBRTCSession? = null
+    private lateinit var localVideoTrack: QBRTCVideoTrack
 
     private lateinit var eglBase: EglBase
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,40 +47,83 @@ class VideoChatActivity : AppCompatActivity() {
         quickBloxDoctorID = intent.getStringExtra("QUICKBLOX_DOCTOR_ID") ?: ""
         quickBloxPatientID = intent.getStringExtra("QUICKBLOX_PATIENT_ID") ?: ""
 
-        eglBase = EglBase.create()
-        localVideoView = binding.localVideoView
-        remoteVideoView = binding.remoteVideoView
 
-//        initQBRTCClient()
-        createChatDialogAndInitiateCall()
+        eglBase = EglBase.create()
+        binding.localVideoView
+        binding.remoteVideoView
+
+        chatLogin()
+
     }
+
     override fun onDestroy() {
         super.onDestroy()
         eglBase.release()
+
+    }
+
+
+     fun chatLogin() {
+         val user = QBUser()
+         user.id = quickBloxDoctorID.toIntOrNull()
+         user.password = "Bics@123"
+
+         QBChatService.getInstance().login(user, object : QBEntityCallback<Void> {
+             override fun onSuccess(aVoid: Void?, bundle: Bundle?) {
+                 createChatDialogAndInitiateCall()
+
+                 Log.d("VideoChatActivity", "Chatlogin  created successfully: ")
+
+             }
+             override fun onError(exception: QBResponseException?) {
+                 Log.d("VideoChatActivity", "Chatlogin  created Failed: ")
+
+
+             }
+         })
+     }
+    fun sessioncraete(){
+        val token = QBSessionManager.getInstance().token
+        val id = quickBloxDoctorID
+
+        val user = QBUser()
+        user.id = quickBloxDoctorID.toIntOrNull()
+        user.password = token
+
+        QBChatService.getInstance().login(user, object : QBEntityCallback<Void> {
+            override fun onSuccess(aVoid: Void, bundle: Bundle) {
+                Log.d("VideoChatActivity", "sessioncraete  created successfully: ")
+            }
+
+            override fun onError(exception: QBResponseException) {
+                Log.d("VideoChatActivity", "sessioncraete  created failed: ")
+
+            }
+        })
     }
 
     private fun initQBRTCClient() {
+        mRtcClient = QBRTCClient.getInstance(applicationContext).apply {
+            addSessionCallbacksListener(rtcSessionCallbacks)
+            prepareToProcessCalls()
+        }
 
-//       val rtcClient = QBRTCClient.getInstance(applicationContext)
-//
-//        rtcClient.addSessionCallbacksListener(rtcSessionCallbacks)
-//        rtcClient.prepareToProcessCalls()
-//        mRtcClient=rtcClient
-
-////
-//        val signalingManager = QBVideoChatWebRTCSignalingManager.getInstance(applicationContext)
-//        if (signalingManager == null) {
-//            Log.e("VideoChatActivity", "Signaling Manager is not initialized.")
-//            // Handle the error or notify the user
-//            return
-//        }
+        val chatService = QBChatService.getInstance()
+        chatService.videoChatWebRTCSignalingManager?.addSignalingManagerListener { signaling, createdLocally ->
+            if (!createdLocally) {
+                mRtcClient.addSignaling(signaling)
+            }
+        } ?: run {
+            Log.e("VideoChatActivity", "Signaling Manager is not initialized.")
+            // Handle the error or notify the user
+        }
     }
 
     private fun createChatDialogAndInitiateCall() {
         val occupantIdsList = arrayListOf(
             quickBloxDoctorID.toIntOrNull() ?: 0,
             quickBloxPatientID.toIntOrNull() ?: 0,
-            139923749
+            140131296
         )
 
         val dialog = QBChatDialog().apply {
@@ -88,7 +135,9 @@ class VideoChatActivity : AppCompatActivity() {
         QBRestChatService.createChatDialog(dialog).performAsync(object : QBEntityCallback<QBChatDialog> {
             override fun onSuccess(result: QBChatDialog?, bundle: Bundle?) {
                 Log.d("VideoChatActivity", "Chat dialog created successfully: ${result?.dialogId}")
+                initQBRTCClient()
                 initiateCall()
+
             }
 
             override fun onError(exception: QBResponseException?) {
@@ -98,39 +147,14 @@ class VideoChatActivity : AppCompatActivity() {
     }
 
     private fun initiateCall() {
-
-
         val userInfo = mutableMapOf<String, String>()
         val opponents = arrayListOf(
             quickBloxDoctorID.toIntOrNull() ?: 0,
             quickBloxPatientID.toIntOrNull() ?: 0,
-            139923749
+            140131296
         )
 
-        val rtcClient = QBRTCClient.getInstance(this)
-        rtcClient.prepareToProcessCalls()
-        val chatService = QBChatService.getInstance()
-
-
-
-//        qbSession = mRtcClient?.createNewSessionWithOpponents(opponents, QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO)
-
-        // add signalling manager
-
-        chatService.videoChatWebRTCSignalingManager.addSignalingManagerListener { signaling, createdLocally ->
-            if (!createdLocally) {
-                rtcClient.addSignaling(signaling)
-            }
-        }
-        qbSession = rtcClient.createNewSessionWithOpponents(opponents, QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO)
-
-
-// configure
-//        QBRTCConfig.setDebugEnabled(true)
-//        QBRTCConfig.setAnswerTimeInterval(answerTimeInterval)
-//        QBRTCConfig.setDisconnectTime(disconnectTimeInterval)
-//        QBRTCConfig.setDialingTimeInterval(dialingTimeInterval)
-
+        qbSession = mRtcClient.createNewSessionWithOpponents(opponents, QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO)
 
         qbSession?.let { session ->
             session.startCall(userInfo)
@@ -139,21 +163,34 @@ class VideoChatActivity : AppCompatActivity() {
     }
 
     private fun setUpVideoViews(session: QBRTCSession) {
-        localVideoView.init(eglBase.eglBaseContext, null)
-        remoteVideoView.init(eglBase.eglBaseContext, null)
+        // Initialize local video view only if not already initialized
+        if (!binding.localVideoView.isInitialized()) {
+            binding.localVideoView.init(eglBase.eglBaseContext, null)
+        }
+
+        // Initialize remote video view only if not already initialized
+        if (!binding.remoteVideoView.isInitialized()) {
+            binding.remoteVideoView.init(eglBase.eglBaseContext, null)
+        }
 
         session.addVideoTrackCallbacksListener(object : QBRTCClientVideoTracksCallbacks<QBRTCSession> {
             override fun onLocalVideoTrackReceive(session: QBRTCSession, videoTrack: QBRTCVideoTrack) {
-                videoTrack.addRenderer(localVideoView)
-                localVideoView.visibility = QBRTCSurfaceView.VISIBLE
+                videoTrack.addRenderer(binding.localVideoView)
+                binding.localVideoView.visibility = QBRTCSurfaceView.VISIBLE
             }
 
             override fun onRemoteVideoTrackReceive(session: QBRTCSession, videoTrack: QBRTCVideoTrack, userID: Int) {
-                videoTrack.addRenderer(remoteVideoView)
-                remoteVideoView.visibility = QBRTCSurfaceView.VISIBLE
+                videoTrack.addRenderer(binding.remoteVideoView)
+                binding.remoteVideoView.visibility = QBRTCSurfaceView.VISIBLE
             }
         })
     }
+
+    // Extension function to check if SurfaceViewRenderer is initialized
+    private fun QBRTCSurfaceView.isInitialized(): Boolean {
+        return this.handler != null
+    }
+
 
     private val rtcSessionCallbacks = object : QBRTCClientSessionCallbacks {
         override fun onReceiveNewSession(session: QBRTCSession?) {

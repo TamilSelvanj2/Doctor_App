@@ -1,36 +1,47 @@
 package com.bics.expense.doctormodule.videoCall
 
 import android.app.Application
-import android.util.Log
 import com.quickblox.auth.session.QBSettings
-import com.quickblox.chat.QBChatService
-import com.quickblox.core.LogLevel
-import com.quickblox.videochat.webrtc.QBRTCConfig
 
+// user default credentials
+const val DEFAULT_USER_PASSWORD = "quickblox@123"
+
+// app credentials
+private val APPLICATION_ID = "103926"
+private val AUTH_KEY = "ak_zvnJ3Q9FNyf2Dze"
+private val AUTH_SECRET = "as_LTUj95zcPRv4TDz"
+private val ACCOUNT_KEY = "ack_gzSfrnKe8zVJgszy4cfe"
 
 class QuickbloxSdk  :Application() {
-    private val applicationID = "103585"
-    private val authKey = "ak_WvTDPfNMQvZhutL"
-    private val authSecret = "as_qaf2fMgQ55aw2ys"
-    private val accountKey = "ack_rzPDDpV1MehAimtFhFZb"
+
+
+
+    companion object {
+        private lateinit var instance: QuickbloxSdk
+
+        @Synchronized
+        fun getInstance(): QuickbloxSdk = instance
+    }
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
+        checkCredentials()
         initCredentials()
-        initChat()
+    }
+
+    private fun checkCredentials() {
+        if (APPLICATION_ID.isEmpty() || AUTH_KEY.isEmpty() || AUTH_SECRET.isEmpty() || ACCOUNT_KEY.isEmpty()) {
+        }
     }
 
     private fun initCredentials() {
-        Log.d("QuickbloxSdk", "Initializing QuickBlox credentials.")
-        QBSettings.getInstance().init(applicationContext, applicationID, authKey, authSecret)
-        QBSettings.getInstance().accountKey = accountKey
-        QBRTCConfig.setDebugEnabled(true)
-
+        QBSettings.getInstance().init(applicationContext, APPLICATION_ID, AUTH_KEY, AUTH_SECRET)
+        QBSettings.getInstance().accountKey = ACCOUNT_KEY
 
     }
-    private fun initChat() {
-        QBSettings.getInstance().logLevel = LogLevel.DEBUG
-        QBChatService.setConfigurationBuilder(QBChatService.ConfigurationBuilder().apply { socketTimeout = 0 })
-        QBChatService.getInstance().isReconnectionAllowed = true
-    }
+//    @Synchronized
+//    fun getDbHelper(): DbHelper {
+//        return dbHelper
+//    }
 }

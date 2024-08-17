@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.prescription.AddPrescriptionActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="4dp">
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textFieldMedication"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:hintTextColor="#59BBAC"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:textColorHint="#59BBAC"
+        android:layout_marginEnd="@dimen/_20sdp">
+
+        <AutoCompleteTextView
+            android:id="@+id/editTextMedicationName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:focusable="false"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:background="@drawable/custom_edittext_background"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/_15sdp"
+            android:hint="Medication"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textFieldDoctor1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFieldMedication"
+        app:hintTextColor="#59BBAC"
+        android:textColorHint="#59BBAC"
+        android:layout_marginEnd="@dimen/_20sdp">
+
+        <AutoCompleteTextView
+            android:id="@+id/editTextDosageName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:focusable="false"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:background="@drawable/custom_edittext_background"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/_15sdp"
+            android:hint="Dosage"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textFieldDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:helperTextTextColor="@color/design_default_color_error"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFieldDoctor1"
+        app:hintTextColor="#59BBAC"
+        android:textColorHint="#59BBAC"
+        android:layout_marginEnd="@dimen/_20sdp">
+
+        <AutoCompleteTextView
+            android:id="@+id/editTextDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:focusable="false"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:background="@drawable/custom_edittext_background"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/_15sdp"
+            android:hint="Duration"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <LinearLayout
+        android:id="@+id/timeSet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textFieldDuration"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="horizontal">
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/everyBtn"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
+            android:background="@drawable/timebuttonbackground"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="Every"
+            />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/alternativeBtn"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
+            android:background="@drawable/timebuttonbackground"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="Alternative"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sepcificBtn"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
+            android:background="@drawable/timebuttonbackground"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="Specific"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/timeSet1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/timeSet"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="horizontal">
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/morningBtn"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
+            android:background="@drawable/timebuttonbackground"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="Morning"
+            />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/noonBtn"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
+            android:background="@drawable/timebuttonbackground"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="Noon"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nightBtn"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
+            android:background="@drawable/timebuttonbackground"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="Night"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/timeSet2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/timeSet1"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="horizontal">
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/beforeFood"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:textSize="@dimen/_10sdp"
+            android:background="@drawable/timebuttonbackground"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="Morning"
+            />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/afterFood"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
+            android:background="@drawable/timebuttonbackground"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="Noon"
+            />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addDrugbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/timeSet2"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:background="@drawable/button_background"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:text="ADD DRUG"
+        android:textColor="@color/white"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

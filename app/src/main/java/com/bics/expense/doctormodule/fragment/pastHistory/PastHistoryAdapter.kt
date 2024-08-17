@@ -1,6 +1,7 @@
 package com.bics.expense.doctormodule.fragment.pastHistory
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,11 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bics.expense.doctormodule.Api.RetrofitClient
 import com.bics.expense.doctormodule.R
 import com.bics.expense.doctormodule.appointment.CancelAppointmentResponse
+import com.bics.expense.doctormodule.dashboard.AppointmentsActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -112,6 +113,13 @@ class PastHistoryAdapter(private var appointments: List<PastHistoryResponse>,
             } else {
                 linear.visibility = View.VISIBLE
                 wait.visibility = View.GONE // Hide the TextView
+            }
+            itemView.setOnClickListener {
+
+                val intent = Intent(itemView.context, AppointmentsActivity::class.java)
+                intent.putExtra("APPOINTMENT_ID", appointment.appointmentID)
+
+                itemView.context.startActivity(intent)
             }
         }
     }

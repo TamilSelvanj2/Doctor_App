@@ -2,7 +2,6 @@ package com.bics.expense.doctormodule.dashboard
 
 
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,11 +12,9 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bics.expense.doctormodule.R
-import com.bics.expense.doctormodule.fragment.newRequest.NewRequestFragment
-import com.bics.expense.doctormodule.fragment.upcoming.UpcomingFragment
+import com.bics.expense.doctormodule.databinding.ActivityDashboardBinding
 import com.bics.expense.doctormodule.fragment.patientDetail.PatientsFragment
 import com.bics.expense.doctormodule.fragment.profile.ProfileFragment
-import com.bics.expense.doctormodule.databinding.ActivityDashboardBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.material.navigation.NavigationView

@@ -1,7 +1,7 @@
 package com.bics.expense.doctormodule.dashboard
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bics.expense.doctormodule.R
@@ -21,10 +21,10 @@ class AppointmentsActivity : AppCompatActivity() {
 
         supportActionBar?.title = "APPOINTMENT DETAILS"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         binding.toolbarheads.setNavigationOnClickListener {
             onBackPressed()
         }
+
         // Enable the back button
 
 
@@ -32,7 +32,6 @@ class AppointmentsActivity : AppCompatActivity() {
             val appointmentID = intent.getStringExtra("APPOINTMENT_ID")
             val fragment = SecondFragment().apply {
                 arguments = Bundle().apply { putString("APPOINTMENT_ID", appointmentID)
-
                 }
             }
             setFragment(fragment)

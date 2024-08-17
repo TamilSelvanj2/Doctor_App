@@ -1,36 +1,30 @@
 package com.bics.expense.doctormodule.fragment.appointment
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.bics.expense.doctormodule.Api.RetrofitClient
 import com.bics.expense.doctormodule.R
 import com.bics.expense.doctormodule.appointment.appointments.UpdateAppointmentRequest
 import com.bics.expense.doctormodule.appointment.appointments.UpdateAppointmentResponse
 import com.bics.expense.doctormodule.fragment.AppointmentDetails
 import com.bics.expense.doctormodule.videoCall.VideoChatActivity
-import com.quickblox.chat.QBRestChatService
-import com.quickblox.chat.model.QBChatDialog
-import com.quickblox.chat.model.QBDialogType
-import com.quickblox.core.QBEntityCallback
-import com.quickblox.core.exception.QBResponseException
-import com.quickblox.users.QBUsers
-import com.quickblox.users.model.QBUser
-import com.quickblox.videochat.webrtc.QBRTCClient
-import com.quickblox.videochat.webrtc.QBRTCSession
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -143,22 +137,22 @@ class AppointmentFragment : Fragment() {
                     appointmentModel?.let {
 
                         val startTime = extractTime(
-                            it.data?.appointmentDetail?.appointmentStartDateandTime ?: ""
+                            it.data?.appointmentDetail?. appointmentStartTime?: ""
                         )
                         val endTime =
-                            extractTime(it.data?.appointmentDetail?.appointmentEndDateandTime ?: "")
+                            extractTime(it.data?.appointmentDetail?.appointmentEndTime ?: "")
 
                         // Format the time range
-                        val timeRange =
-                            if (!startTime.isNullOrBlank() && !endTime.isNullOrBlank()) {
-                                "$startTime - $endTime"
-                            } else {
-                                " -- : --"
-                            }
+                        val timeRange = if (!startTime.isNullOrBlank() && !endTime.isNullOrBlank()) {
+                            "$startTime - $endTime"
+                        } else {
+                            "-- : --"
+                        }
+
                         textViewAccountId.text = ": ${it.data?.appointmentDetail?.appointmentID}"
                         textViewSpeciailty.text = ": ${it.data?.appointmentDetail?.speciality}"
                         textViewAppointmentDate.text = ": ${it.data?.appointmentDetail?.appointmentDate}"
-                        textViewAppointmentTime.text =timeRange
+                        textViewAppointmentTime.text =": ${timeRange}"
                         textViewStatus.text = ": ${it.data?.appointmentDetail?.status}"
 
 
@@ -265,7 +259,7 @@ class AppointmentFragment : Fragment() {
         }
 
         rejectedBtn.setOnClickListener {
-            sendAppointmentStatus(3)
+            rejcteAppointmentStatus(3)
         }
 
         fifteenBtn.setOnClickListener {
@@ -391,17 +385,11 @@ class AppointmentFragment : Fragment() {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
                         if (responseBody?.success == true) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Appointment updated successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
+
+                            Toast.makeText(requireContext(), "Appointment updated successfully", Toast.LENGTH_SHORT).show()
+                            requireActivity().finish()
                         } else {
-                            Toast.makeText(
-                                requireContext(),
-                                "${responseBody?.error ?: "Unknown error"}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(requireContext(), "${responseBody?.error ?: "Unknown error"}", Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         Toast.makeText(
@@ -419,50 +407,121 @@ class AppointmentFragment : Fragment() {
             })
     }
 
+    private fun rejcteAppointmentStatus(status: Int) {
 
-
-
-
-
-
-
-    private fun createDialog(patientId: Int, doctorId: Int, dialogName: String) {
-
-
-        val occupantIdsList = arrayListOf(patientId, doctorId, 139923749) // Add any other occupant IDs if needed
-
-        val dialog = QBChatDialog().apply {
-            name = dialogName
-            type = QBDialogType.GROUP
-            setOccupantsIds(occupantIdsList)
+        val appointmentID = arguments?.getString("APPOINTMENT_ID") ?: run {
+            Toast.makeText(requireContext(), "Invalid appointment ID", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        QBRestChatService.createChatDialog(dialog).performAsync(object : QBEntityCallback<QBChatDialog> {
-            override fun onSuccess(dialog: QBChatDialog?, bundle: Bundle?) {
-                Log.d("AppointmentFragment", "Dialog created successfully")
+        val builder = AlertDialog.Builder(requireContext(), R.style.RoundedTabLayoutStyle)
+        val inflater = LayoutInflater.from(requireContext())
+
+        val rejectedView = inflater.inflate(R.layout.appoinmentrejectedcard, null)
+        val radioGroup = rejectedView.findViewById<RadioGroup>(R.id.rejected_radioGroup)
+        val rejected = rejectedView.findViewById<Button>(R.id.rejectedAccepted)
+        val cancel = rejectedView.findViewById<Button>(R.id.btnCancel)
+
+// Add radio buttons from your layout (assuming IDs are set in rejected_card_view.xml)
+        val notAvailableRadio = rejectedView.findViewById<RadioButton>(R.id.notAvailable_Radio)
+        val emergencyRadio = rejectedView.findViewById<RadioButton>(R.id.Emergency_radio)
+        val visitingRadio = rejectedView.findViewById<RadioButton>(R.id.visiting_radio)
+        val otherRadio = rejectedView.findViewById<RadioButton>(R.id.other_radio) // Assuming an "Other" radio button exists
+        val notes = rejectedView.findViewById<EditText>(R.id.othersNotes) // Assuming an "Other" radio button exists
+
+
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            if (checkedId == otherRadio.id) {
+                notes.visibility = View.VISIBLE
+            } else {
+                notes.visibility = View.GONE
+            }
+        }
+
+        builder.setView(rejectedView)
+        // Create and show the AlertDialog
+        val dialog = builder.create()
+        dialog.show()
+
+
+        cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        rejected.setOnClickListener {
+            val selectedId = radioGroup.checkedRadioButtonId
+
+            val selectedReason = when (selectedId) {
+                notAvailableRadio.id -> notAvailableRadio.text.toString()
+                emergencyRadio.id -> emergencyRadio.text.toString()
+                visitingRadio.id -> visitingRadio.text.toString()
+                otherRadio.id -> notes.text.toString()
+                else -> "No reason selected"
             }
 
-            override fun onError(e: QBResponseException?) {
-                Log.e("AppointmentFragment", "Error creating dialog: ${e?.message}")
+                val appointmentRequest = UpdateAppointmentRequest(
+                    appointmentID = appointmentID,
+                    statusID = status,
+                    appointmentDate = null,
+                    notes = selectedReason
+                )
+
+                RetrofitClient.apiService.updateAppointment(appointmentRequest)
+                    .enqueue(object : Callback<UpdateAppointmentResponse> {
+                        override fun onResponse(
+                            call: Call<UpdateAppointmentResponse>,
+                            response: Response<UpdateAppointmentResponse>
+                        ) {
+
+                            if (response.isSuccessful) {
+                                val responseBody = response.body()
+                                if (responseBody?.success == true) {
+
+                                    Toast.makeText(requireContext(), "Appointment updated successfully", Toast.LENGTH_SHORT).show()
+                                    dialog.dismiss()
+                                    requireActivity().finish()
+
+                                } else {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "${responseBody?.error ?: "Unknown error"}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Failed to update appointment",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+                        override fun onFailure(
+                            call: Call<UpdateAppointmentResponse>,
+                            t: Throwable
+                        ) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Error: ${t.message}",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    })
             }
-        })
     }
 
-
-
-    fun extractTime(dateTime: String): String {
-        if (dateTime.isBlank()) return ""
+    fun extractTime(timeString: String): String {
+        if (timeString.isBlank()) return ""
 
         return try {
-            // Parse the date-time string
-            val isoFormat =
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault())
-            isoFormat.timeZone = TimeZone.getTimeZone("UTC")
-            val parsedDate = isoFormat.parse(dateTime)
+            // Parse the time string
+            val inputFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+            val parsedTime = inputFormat.parse(timeString)
 
             // Format the parsed time to "h:mm aa"
             val outputFormat = SimpleDateFormat("h:mm aa", Locale.getDefault())
-            outputFormat.format(parsedDate)
+            outputFormat.format(parsedTime)
         } catch (e: Exception) {
             e.printStackTrace()
             ""
